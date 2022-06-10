@@ -1,48 +1,46 @@
+import pandas as pd
 import streamlit as st
+import requests
 
-'''
-# TaxiFareModel front
-'''
 
-st.markdown('''
-Remember that there are several ways to output content into your web page...
+st.title('Taxi Fare Model ')
 
-Either as with the title by just creating a string (or an f-string). Or as with this paragraph using the `st.` functions
-''')
-
-'''
-## Here we would like to add some controllers in order to ask the user to select the parameters of the ride
-
-1. Let's ask for:
-- date and time
-- pickup longitude
-- pickup latitude
-- dropoff longitude
-- dropoff latitude
-- passenger count
-'''
-
-'''
-## Once we have these, let's call our API in order to retrieve a prediction
-
-See ? No need to load a `model.joblib` file in this app, we do not even need to know anything about Data Science in order to retrieve a prediction...
-
-🤔 How could we call our API ? Off course... The `requests` package 💡
-'''
+data_time = st.date_input('Date and time', value=None, min_value=None, max_value=None, key=None, help=None, on_change=None, args=None, kwargs=None, disabled=False)
+pickup_longitude = st.text_input('Pickup longitude')
+pickup_latitude = st.text_input('Pickup latitude')
+dropoff_longitude = st.text_input('Dropoff longitude')
+dropoff_latitude = st.text_input('Dropoff latitude')
+passenger_count = st.number_input('Passenger count', 1, 10)
 
 url = 'https://taxifare.lewagon.ai/predict'
 
-if url == 'https://taxifare.lewagon.ai/predict':
+# if url == 'https://taxifare.lewagon.ai/predict':
 
-    st.markdown('Maybe you want to use your own API for the prediction, not the one provided by Le Wagon...')
+
+
+st.subheader('The parameters of my API.')
+df = pd.DataFrame([{
+          'Pickup longitude': pickup_longitude,
+          'Pickup latitude': pickup_latitude,
+          'Dropoff longitude': dropoff_longitude,
+          'Dropoff latitude': dropoff_latitude,
+          'Passenger count': passenger_count
+        }])
+
+df
+
+
+st.subheader('Calling the API using the requests package')
+
+result = requests.get(url).json()
+result
+
+
+
+
+st.subheader('The prediction from the **JSON** returned by the API')
 
 '''
-
-2. Let's build a dictionary containing the parameters for our API...
-
-3. Let's call our API using the `requests` package...
-
-4. Let's retrieve the prediction from the **JSON** returned by the API...
 
 ## Finally, we can display the prediction to the user
 '''
